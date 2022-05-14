@@ -1,0 +1,478 @@
+{
+  "project_info": {
+    "project_number": "256489545026",
+    "project_id": "todos-1f195",
+    "storage_bucket": "todos-1f195.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:3d0ac04de57c4afd55bcdb",
+        "android_client_info": {
+          "package_name": "com.example.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:a8c870d41f97dc9755bcdb",
+        "android_client_info": {
+          "package_name": "com.example.customer_facing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:ce764ef9cd0ad5f655bcdb",
+        "android_client_info": {
+          "package_name": "com.example.customer_facing_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:b6d86b4077cd404655bcdb",
+        "android_client_info": {
+          "package_name": "com.example.firebase_push_notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:c5f6f6dfce81d75255bcdb",
+        "android_client_info": {
+          "package_name": "com.example.firebase_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:13158482bda293c455bcdb",
+        "android_client_info": {
+          "package_name": "com.example.firebsae_push_notification_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:c7886dbafb2bf96055bcdb",
+        "android_client_info": {
+          "package_name": "com.example.firestore_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:10ad058436296e0255bcdb",
+        "android_client_info": {
+          "package_name": "com.example.firestore_todos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:ef3be61bcd79d05355bcdb",
+        "android_client_info": {
+          "package_name": "com.example.maintenance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:1bc75bcedda6ee8855bcdb",
+        "android_client_info": {
+          "package_name": "com.example.my_notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:d06746a81eb0be8b55bcdb",
+        "android_client_info": {
+          "package_name": "com.example.patient_care"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:84399cc5f235fed655bcdb",
+        "android_client_info": {
+          "package_name": "com.example.todos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256489545026:android:6873c9a6e945840255bcdb",
+        "android_client_info": {
+          "package_name": "com.sixamtech.stack_food"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEwEMWA_YBUiI4WL1oQCOYOstYGXMZPyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256489545026-246m09vdgdphi8ekignpa1at651uaout.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256489545026-28mn6g7fa04ls4v7d618jr3qd4nin3m1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
