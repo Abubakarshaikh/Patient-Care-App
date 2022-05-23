@@ -13,9 +13,15 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   geolocator: ^8.2.1
-  firebase_core: ^1.17.0
   firebase_auth: ^3.3.18
   cloud_firestore: ^3.1.15
+  firebase_core: any
+  firebase_storage: any
+  just_audio: ^0.9.21
+  record: ^4.1.1
+  audioplayers: any
+  path_provider: ^2.0.10
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:

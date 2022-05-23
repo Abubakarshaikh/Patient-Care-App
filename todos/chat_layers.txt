@@ -1,0 +1,19 @@
+1. voice record on local dir OR textfield
+2. json-file
+    [
+      {
+        "dateTime": 0,
+        "messageType": "text",
+        "message": "hello"
+      },
+      {
+        "dateTime": 0,
+        "messageType": "voice",
+        "message": "https://firebasestorage.googleapis.com/"
+      }
+    ]
+3. ..upload to firebase-storage
+4. ..save data with voice url to firebase-firestore
+5. get firebase-firestore via stream-builder
+6. messageType('text') ..text-box widget
+7. messageType('voice') ..voice-play widget

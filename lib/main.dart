@@ -1,10 +1,14 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:patient_care/caregiver_page.dart';
+import 'package:patient_care/patient_page.dart';
+import 'package:patient_care/login_page.dart';
 import 'firebase_options.dart';
+import 'dart:async';
 
 enum UserOption { caregiver, patient }
 
@@ -13,6 +17,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const App());
 }
 
@@ -21,26 +26,67 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
     return MaterialApp(
       theme: ThemeData(
-          inputDecorationTheme: InputDecorationTheme(
+          inputDecorationTheme: const InputDecorationTheme(
         enabledBorder: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(vertical: 8),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 12,
+        ),
       )),
-      home: RegisterPage(),
+      home: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance.collection('appusers').snapshots(),
+        builder: (_, querySnaps) {
+          switch (querySnaps.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator());
+            case ConnectionState.done:
+            case ConnectionState.active:
+              if (currentUser != null) {
+                final data = querySnaps.data!.docs.map((querySnaps) {
+                  return querySnaps.data();
+                }).firstWhere(
+                    (element) => element.containsValue(currentUser.email));
+
+                if (data['userType'] == 'Caregiver') {
+                  return const CaregiverPage();
+                } else if (data['userType'] == 'Patient') {
+                  return const PatientPage();
+                }
+              }
+              return LoginPage();
+
+            default:
+              return const Center(
+                child: Text("Something went wrong"),
+              );
+          }
+        },
+      ),
     );
   }
 }
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  static Route<RegisterPage> route() {
+    return MaterialPageRoute(builder: (_) => RegisterPage());
+  }
+
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late final TextEditingController _username;
+  late final TextEditingController _password;
+
   List<Disease> diseases = [
     Disease(id: "1", name: "Heart Patient"),
     Disease(id: "2", name: "Kidney Patient"),
@@ -50,32 +96,40 @@ class _RegisterPageState extends State<RegisterPage> {
   String _selectedDisease = "1";
   UserOption? _selectedUserOption = UserOption.caregiver;
 
-  String? _username;
-  String? _password;
   double? _latitude;
   double? _longitude;
+
+  @override
+  void initState() {
+    _password = TextEditingController();
+    _username = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _password.dispose();
+    _username.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12.0),
         child: Align(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextField(
-                  onChanged: (newValue) {
-                    _username = newValue;
-                  },
+                  controller: _username,
                   decoration: InputDecoration(labelText: 'email'),
                 ),
                 SizedBox(height: 12),
                 TextField(
-                  onChanged: (newValue) {
-                    _password = newValue;
-                  },
+                  controller: _password,
                   decoration: InputDecoration(labelText: 'password'),
                 ),
                 ListTile(
@@ -86,6 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onChanged: (UserOption? newValue) {
                       setState(() {
                         _selectedUserOption = newValue;
+                        log("${_selectedUserOption}");
                       });
                     },
                   ),
@@ -98,6 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onChanged: (UserOption? newValue) {
                       setState(() {
                         _selectedUserOption = newValue;
+                        log("${_selectedUserOption}");
                       });
                     },
                   ),
@@ -143,18 +199,61 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await _saveCareGiverFirestore(
-                      currentDateTime: DateTime.now(),
-                      latitude: _latitude,
-                      longitude: _longitude,
-                      password: _password,
-                      userType: _selectedUserOption == UserOption.caregiver
-                          ? "Caregiver"
-                          : "Patient",
-                      username: _username,
+                    final user = await loginAuth(
+                      email: _username.text,
+                      password: _password.text,
                     );
+                    log("-------$user");
+                    if (user != null) {
+                      if (_selectedUserOption == UserOption.caregiver) {
+                        await _saveCareGiverFirestore(
+                          currentDateTime: DateTime.now(),
+                          latitude: _latitude,
+                          longitude: _longitude,
+                          password: _password.text,
+                          userType: "Caregiver",
+                          username: _username.text,
+                        );
+                        Navigator.push(context, CaregiverPage.route());
+                      } else {
+                        await _savePatientFirestore(
+                          currentDateTime: DateTime.now(),
+                          latitude: _latitude,
+                          longitude: _longitude,
+                          password: _password.text,
+                          userType: "Patient",
+                          username: _username.text,
+                        );
+                        Navigator.push(context, PatientPage.route());
+                      }
+                    }
+
+                    // else {
+                    //   final user = await loginAuth(
+                    //     email: _username,
+                    //     password: _password,
+                    //   );
+                    //   if (user != null) {
+                    //     // Navigator.push(context, HomePage.route());
+                    //     await _savePatientFirestore(
+                    //       currentDateTime: DateTime.now(),
+                    //       latitude: _latitude,
+                    //       longitude: _longitude,
+                    //       password: _password.text,
+                    //       userType: "Patient",
+                    //       username: _username.text,
+                    //     );
+                    //     Navigator.push(context, PatientPage.route());
+                    //   }
+                    // }
                   },
                   child: const Text("Registered"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(context, LoginPage.route);
+                  },
+                  child: const Text('if registered'),
                 ),
               ],
             ),
@@ -187,12 +286,13 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _saveCareGiverFirestore({
-    required String? username,
-    required String? password,
-    required double? latitude,
-    required double? longitude,
-    required String? userType,
-    required DateTime? currentDateTime,
+    String? userId,
+    String? username,
+    String? password,
+    double? latitude,
+    double? longitude,
+    String? userType,
+    DateTime? currentDateTime,
   }) async {
     final notes = FirebaseFirestore.instance.collection('appusers');
     await notes
@@ -203,28 +303,33 @@ class _RegisterPageState extends State<RegisterPage> {
           "longitude": longitude,
           "userType": userType,
           "currentDateTime": currentDateTime,
+          "assignedPatient": 0,
+          "morningMedicine": false,
+          "dayMedicine": false,
+          "nightMedicine": false
         })
         .then((value) => log('success'))
         .onError((error, stackTrace) => log("$error"));
   }
 
   Future<void> _savePatientFirestore({
-    required String? username,
-    required String? password,
-    required double? latitude,
-    required double? longitude,
-    required String? userType,
-    required DateTime? currentDateTime,
+    String? userId,
+    String? username,
+    String? password,
+    double? latitude,
+    double? longitude,
+    String? userType,
+    DateTime? currentDateTime,
   }) async {
-    final notes = FirebaseFirestore.instance.collection('appusers');
+    final _collect = FirebaseFirestore.instance.collection('appusers');
     List<Map<String, dynamic>> withDistanceCaregiverList = [];
 
-    notes.where('userType', isEqualTo: 'caregiver').get().then(
+    await _collect.where('userType', isEqualTo: 'Caregiver').get().then(
       (QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
-          if (double.parse(doc['assignedPatient'].toString()) <= 5) {
+          if (doc['assignedPatient'] <= 5) {
             Map<String, dynamic> userMap = {
-              'userName': doc['userName'],
+              'username': doc['username'],
               'distance': Geolocator.distanceBetween(
                   latitude!, longitude!, doc['latitude'], doc['longitude'])
             };
@@ -240,12 +345,16 @@ class _RegisterPageState extends State<RegisterPage> {
       return m1["distance"].compareTo(m2["distance"]);
     });
 
-    print(withDistanceCaregiverList[0]);
+    // log("you are assigned caregiver:" +
+    //     withDistanceCaregiverList[0]['username']);
+    // log("current user: $username");
 
-    print(
-        "you are assigned caregiver:" + withDistanceCaregiverList[0]['email']);
+    FirebaseFirestore.instance.collection('userconnection').add({
+      "usernameA": withDistanceCaregiverList[0]['username'],
+      "usernameB": username,
+    });
 
-    await notes
+    await _collect
         .add({
           "username": username,
           "password": password,
@@ -253,9 +362,25 @@ class _RegisterPageState extends State<RegisterPage> {
           "longitude": longitude,
           "userType": userType,
           "currentDateTime": currentDateTime,
+          "assignedPatient": 0,
+          "morningMedicine": false,
+          "dayMedicine": false,
+          "nightMedicine": false
         })
         .then((value) => log('success'))
         .onError((error, stackTrace) => log("$error"));
+  }
+
+  Future<User?> loginAuth({required email, required password}) async {
+    final auth = FirebaseAuth.instance;
+    await auth
+        .createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        )
+        .then((value) => log('success'))
+        .onError((error, stackTrace) => log('error $error'));
+    return auth.currentUser;
   }
 }
 
