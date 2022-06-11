@@ -17,14 +17,8 @@ class PatientPage extends StatefulWidget {
 }
 
 class _PatientPageState extends State<PatientPage> {
-  bool _isMorning = false;
-  bool _isDay = false;
-  bool _isNight = false;
-
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!.email;
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -38,11 +32,8 @@ class _PatientPageState extends State<PatientPage> {
           ),
         ],
       ),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        future: FirebaseFirestore.instance
-            .collection('appusers')
-            .where('username', isEqualTo: user)
-            .get(),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: getConnectionList(),
         builder: (_, snaps) {
           switch (snaps.connectionState) {
             case ConnectionState.none:
@@ -50,95 +41,38 @@ class _PatientPageState extends State<PatientPage> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            case ConnectionState.active:
             case ConnectionState.done:
+            case ConnectionState.active:
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      children: [
-                        const Text("Morining"),
-                        Switch(
-                          value: _isMorning,
-                          onChanged: (newValue) {
-                            _isMorning = newValue;
-                            updateFirestore();
-                            setState(() {});
+                  SwitcherButtons(usernameA: snaps.data!.first['usernameA']),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snaps.data!.length,
+                      itemBuilder: (_, index) {
+                        return InkWell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text("${snaps.data![index]['usernameA']}"),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return ChatPage(
+                                    currentUserA: snaps.data![index]
+                                        ['usernameB'],
+                                    currentUserB: snaps.data![index]
+                                        ['usernameA'],
+                                  );
+                                },
+                              ),
+                            );
                           },
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      children: [
-                        const Text("Day"),
-                        Switch(
-                          value: _isDay,
-                          onChanged: (newValue) {
-                            _isDay = newValue;
-                            setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      children: [
-                        const Text("Night"),
-                        Switch(
-                          value: _isNight,
-                          onChanged: (newValue) {
-                            _isNight = newValue;
-                            setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  FutureBuilder<List<Map<String, dynamic>>>(
-                    future: getConnectionList(),
-                    builder: (_, snaps) {
-                      switch (snaps.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        case ConnectionState.done:
-                        case ConnectionState.active:
-                          return Expanded(
-                            child: ListView.builder(
-                              itemCount: snaps.data!.length,
-                              itemBuilder: (_, index) {
-                                return ListTile(
-                                  title: Text(
-                                      "${snaps.data![index]['usernameA']}"),
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (_) {
-                                      return ChatPage(
-                                        currentUserA: snaps.data![index]
-                                            ['usernameB'],
-                                        currentUserB: snaps.data![index]
-                                            ['usernameA'],
-                                      );
-                                    }));
-                                  },
-                                );
-                              },
-                            ),
-                          );
-                        default:
-                          return const Center(
-                            child: Text("Something went wrong"),
-                          );
-                      }
-                    },
                   ),
                 ],
               );
@@ -150,10 +84,6 @@ class _PatientPageState extends State<PatientPage> {
         },
       ),
     );
-  }
-
-  User? getCurrentUser() {
-    return FirebaseAuth.instance.currentUser;
   }
 
   Future<List<Map<String, dynamic>>> getConnectionList() async {
@@ -170,29 +100,122 @@ class _PatientPageState extends State<PatientPage> {
           .toList();
     });
   }
+}
 
-  Future<void> updateFirestore() async {
-    final user = FirebaseAuth.instance.currentUser!.email;
-    QuerySnapshot querySnap = await FirebaseFirestore.instance
-        .collection('appusers')
-        .where('username', isEqualTo: user)
-        .get();
-    log("--------${user!.length}");
-    QueryDocumentSnapshot doc = querySnap.docs[0];
-    final getData = doc.data() as Map<String, dynamic>;
+class SwitcherButtons extends StatelessWidget {
+  final String usernameA;
+  SwitcherButtons({Key? key, required this.usernameA}) : super(key: key);
 
-    DocumentReference docRef = doc.reference;
-    await docRef.update({
-      "username": getData['username'],
-      "password": getData['password'],
-      "latitude": getData['latitude'],
-      "longitude": getData['longitude'],
-      "userType": getData['userType'],
-      "currentDateTime": getData['currentDateTime'],
-      "assignedPatient": 0,
-      "morningMedicine": true,
-      "dayMedicine": true,
-      "nightMedicine": true
-    });
+  final ValueNotifier<bool?> isMorning = ValueNotifier(null);
+  final ValueNotifier<bool?> isDay = ValueNotifier(null);
+  final ValueNotifier<bool?> isNight = ValueNotifier(null);
+
+  @override
+  Widget build(BuildContext context) {
+    log("${usernameA}");
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance
+            .collection('appusers')
+            .where('username', isEqualTo: usernameA)
+            .snapshots(),
+        builder: (context, snaps) {
+          switch (snaps.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case ConnectionState.done:
+            case ConnectionState.active:
+              log("---${snaps.hasData}---");
+              final appsuser = snaps.data!.docs.map((e) {
+                return e;
+              }).toList()[0];
+              final ref = appsuser.reference;
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Text("Morning Medicine"),
+                        Switch(
+                          value: appsuser.data()['morningMedicine'],
+                          onChanged: (newvalue) {
+                            ref.update({
+                              "username": appsuser.data()['username'],
+                              "password": appsuser.data()['password'],
+                              "latitude": appsuser.data()['latitude'],
+                              "longitude": appsuser.data()['longitude'],
+                              "userType": appsuser.data()['userType'],
+                              "currentDateTime":
+                                  appsuser.data()['currentDateTime'],
+                              "assignedPatient": 0,
+                              "morningMedicine": newvalue,
+                              "dayMedicine": appsuser.data()['dayMedicine'],
+                              "nightMedicine": appsuser.data()['nightMedicine'],
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text("Day Medicine"),
+                        Switch(
+                          value: appsuser.data()['dayMedicine'],
+                          onChanged: (newvalue) {
+                            ref.update({
+                              "username": appsuser.data()['username'],
+                              "password": appsuser.data()['password'],
+                              "latitude": appsuser.data()['latitude'],
+                              "longitude": appsuser.data()['longitude'],
+                              "userType": appsuser.data()['userType'],
+                              "currentDateTime":
+                                  appsuser.data()['currentDateTime'],
+                              "assignedPatient": 0,
+                              "morningMedicine":
+                                  appsuser.data()['morningMedicine'],
+                              "dayMedicine": newvalue,
+                              "nightMedicine": appsuser.data()['nightMedicine'],
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text("Night medicine"),
+                        Switch(
+                          value: appsuser.data()['nightMedicine'],
+                          onChanged: (newvalue) {
+                            ref.update({
+                              "username": appsuser.data()['username'],
+                              "password": appsuser.data()['password'],
+                              "latitude": appsuser.data()['latitude'],
+                              "longitude": appsuser.data()['longitude'],
+                              "userType": appsuser.data()['userType'],
+                              "currentDateTime":
+                                  appsuser.data()['currentDateTime'],
+                              "assignedPatient": 0,
+                              "morningMedicine":
+                                  appsuser.data()['morningMedicine'],
+                              "dayMedicine": appsuser.data()['dayMedicine'],
+                              "nightMedicine": newvalue,
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+
+            default:
+              return const Center(
+                child: Text("Something went wrong"),
+              );
+          }
+        });
   }
 }

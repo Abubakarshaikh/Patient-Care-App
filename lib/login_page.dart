@@ -1,12 +1,8 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_care/caregiver_page.dart';
-import 'package:patient_care/main.dart';
-
-import 'patient_page.dart';
+import 'package:patient_care/family_member_registration.dart';
+import 'package:patient_care/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   static Route get route {
@@ -40,86 +36,67 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Align(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextField(
-                  controller: _email,
-                  decoration: InputDecoration(
-                    hintText: 'email',
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _password,
-                  decoration: InputDecoration(
-                    hintText: 'password',
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () async {
-                    final login = await loginAuth(
-                      email: _email.text,
-                      password: _password.text,
-                    );
-                    if (login != null) {
-                      final doc = await FirebaseFirestore.instance
-                          .collection('appusers')
-                          .where(
-                            'username',
-                            isEqualTo: login.email,
-                          )
-                          .get()
-                          .then((value) {
-                        return value.docs.map((value) {
-                          final newValue = value.data();
-                          return newValue;
-                        }).toList();
-                      });
-
-                      log("${doc.length}");
-
-                      if (doc.any(
-                          (element) => element['userType'] == 'Caregiver')) {
-                        log("2");
-
-                        Navigator.push(context, CaregiverPage.route());
-                      } else {
-                        log("3");
-                        Navigator.push(context, PatientPage.route());
-                      }
-                    }
-                  },
-                  child: Text("Login"),
-                ),
-                SizedBox(height: 24),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(context, RegisterPage.route());
-                  },
-                  child: Text('registred'),
-                ),
-              ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: _email,
+              decoration: const InputDecoration(
+                hintText: 'Email',
+              ),
             ),
-          ),
+            const SizedBox(height: 12),
+            TextField(
+              keyboardType: TextInputType.visiblePassword,
+              controller: _password,
+              decoration: const InputDecoration(
+                hintText: 'Password',
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () async {
+                await loginAuth(
+                  email: _email.text,
+                  password: _password.text,
+                );
+              },
+              child: const Text("Login"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context, RegisterPage.route());
+              },
+              child: const Text('if not register'),
+            ),
+            Container(alignment: Alignment.center, child: const Text('OR')),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context, FamilyMemberRegistration.route());
+              },
+              child: const Text('register family member'),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Future<User?> loginAuth({required email, required password}) async {
-    final _auth = FirebaseAuth.instance;
-    await _auth
-        .signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        )
-        .then((value) => log('success'))
-        .onError((error, stackTrace) => log('error'));
-    return _auth.currentUser;
+  Future<void> loginAuth({required email, required password}) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          )
+          .then((value) => log('success'))
+          .onError((error, stackTrace) => log('error'));
+    } catch (e) {
+      log("Error: $e");
+    }
   }
 }
